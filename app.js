@@ -145,6 +145,8 @@ function initFormListeners() {
 }
 
 // 5. دالة تنزيل الـ PDF (مع ضبط الأبعاد الذكي للموبايل)
+// app.js - الدالة المعدلة لمنع الصفحة البيضاء عند التحميل
+
 function initPDFExport() {
   const printBtn = document.getElementById('printBtn');
   if (!printBtn) return;
@@ -156,6 +158,49 @@ function initPDFExport() {
     const originalText = printBtn.innerText;
     printBtn.innerText = 'جاري التحميل... ⏳';
     printBtn.disabled = true;
+
+    // 1. إنشاء نسخة مطابقة للمعاينة في الخلفية بأبعاد A4 حقيقية
+    const clone = cvElement.cloneNode(true);
+    clone.style.width = '210mm';
+    clone.style.minHeight = '297mm';
+    clone.style.position = 'absolute';
+    clone.style.left = '-9999px';
+    clone.style.top = '0';
+    clone.style.background = '#ffffff';
+    
+    document.body.appendChild(clone);
+
+    // 2. إعدادات html2pdf المضمونة للتصوير
+    const opt = {
+      margin: 0,
+      filename: `${personName}_CV.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2, 
+        useCORS: true, 
+        logging: false,
+        scrollX: 0,
+        scrollY: 0
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // 3. التصدير من النسخة المخفية ثم حذفها
+    html2pdf().set(opt).from(clone).save().then(() => {
+      document.body.removeChild(clone);
+      printBtn.innerText = originalText;
+      printBtn.disabled = false;
+    }).catch(err => {
+      console.error('حدث خطأ أثناء تحميل الـ PDF:', err);
+      if (document.body.contains(clone)) {
+        document.body.removeChild(clone);
+      }
+      printBtn.innerText = originalText;
+      printBtn.disabled = false;
+    });
+  });
+}
+
 
     // تطبيق أبعاد A4 الحقيقية مؤقتاً للتصدير
     cvElement.style.width = '210mm';
