@@ -1,4 +1,4 @@
-// app.js
+// app.js - الكود المكتمل والمصحح 100%
 
 // 1. حالة التطبيق (State Store)
 const store = {
@@ -55,7 +55,6 @@ function updatePreview() {
   const t = translations[currentLang] || translations.ar;
   const selectedTemplate = document.getElementById('templateSelect')?.value || '1';
 
-  // اختيار القالب المناسب حسب القيمة المحددة
   let htmlContent = '';
   if (selectedTemplate === '1' && typeof renderTemplate1 === 'function') {
     htmlContent = renderTemplate1(store.data, t);
@@ -90,7 +89,7 @@ function initFormListeners() {
     }
   });
 
-  // المهارات (تحويل النص إلى مصفوفة يفصل بينها فاصلة)
+  // المهارات
   const skillsInput = document.getElementById('skills');
   if (skillsInput) {
     skillsInput.addEventListener('input', (e) => {
@@ -144,89 +143,13 @@ function initFormListeners() {
   }
 }
 
-// 5. دالة تنزيل الـ PDF (مع ضبط الأبعاد الذكي للموبايل)
-// app.js - الدالة المعدلة لمنع الصفحة البيضاء عند التحميل
-
-// app.js - الحل المضمون 100% للطباعة وتنزيل الـ PDF
+// 5. دالة الطباعة وتنزيل الـ PDF (المستقرة والمضمونة)
 function initPDFExport() {
   const printBtn = document.getElementById('printBtn');
   if (!printBtn) return;
 
   printBtn.addEventListener('click', () => {
-    // فتح نافذة الطباعة/حفظ PDF المدمجة في النظام
     window.print();
-  });
-}
-
-
-    // 1. إنشاء نسخة مطابقة للمعاينة في الخلفية بأبعاد A4 حقيقية
-    const clone = cvElement.cloneNode(true);
-    clone.style.width = '210mm';
-    clone.style.minHeight = '297mm';
-    clone.style.position = 'absolute';
-    clone.style.left = '-9999px';
-    clone.style.top = '0';
-    clone.style.background = '#ffffff';
-    
-    document.body.appendChild(clone);
-
-    // 2. إعدادات html2pdf المضمونة للتصوير
-    const opt = {
-      margin: 0,
-      filename: `${personName}_CV.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2, 
-        useCORS: true, 
-        logging: false,
-        scrollX: 0,
-        scrollY: 0
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    // 3. التصدير من النسخة المخفية ثم حذفها
-    html2pdf().set(opt).from(clone).save().then(() => {
-      document.body.removeChild(clone);
-      printBtn.innerText = originalText;
-      printBtn.disabled = false;
-    }).catch(err => {
-      console.error('حدث خطأ أثناء تحميل الـ PDF:', err);
-      if (document.body.contains(clone)) {
-        document.body.removeChild(clone);
-      }
-      printBtn.innerText = originalText;
-      printBtn.disabled = false;
-    });
-  });
-}
-
-
-    // تطبيق أبعاد A4 الحقيقية مؤقتاً للتصدير
-    cvElement.style.width = '210mm';
-    cvElement.style.minHeight = '297mm';
-
-    const opt = {
-      margin:       0,
-      filename:     `${personName}_CV.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, logging: false },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    html2pdf().set(opt).from(cvElement).save().then(() => {
-      // إعادة التصميم للوضع المرن بعد التنزيل
-      cvElement.style.width = '';
-      cvElement.style.minHeight = '';
-      printBtn.innerText = originalText;
-      printBtn.disabled = false;
-    }).catch(err => {
-      console.error('حدث خطأ أثناء تحميل الـ PDF:', err);
-      cvElement.style.width = '';
-      cvElement.style.minHeight = '';
-      printBtn.innerText = originalText;
-      printBtn.disabled = false;
-    });
   });
 }
 
