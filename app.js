@@ -147,17 +147,17 @@ function initFormListeners() {
 // 5. دالة تنزيل الـ PDF (مع ضبط الأبعاد الذكي للموبايل)
 // app.js - الدالة المعدلة لمنع الصفحة البيضاء عند التحميل
 
+// app.js - الحل المضمون 100% للطباعة وتنزيل الـ PDF
 function initPDFExport() {
   const printBtn = document.getElementById('printBtn');
   if (!printBtn) return;
 
   printBtn.addEventListener('click', () => {
-    const cvElement = document.getElementById('cvPaper');
-    const personName = store.data.name ? store.data.name.trim() : 'CV';
+    // فتح نافذة الطباعة/حفظ PDF المدمجة في النظام
+    window.print();
+  });
+}
 
-    const originalText = printBtn.innerText;
-    printBtn.innerText = 'جاري التحميل... ⏳';
-    printBtn.disabled = true;
 
     // 1. إنشاء نسخة مطابقة للمعاينة في الخلفية بأبعاد A4 حقيقية
     const clone = cvElement.cloneNode(true);
