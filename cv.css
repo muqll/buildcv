@@ -157,3 +157,35 @@ html, body {
     min-height: 297mm !important;
   }
 }
+/* أضف هذا الكود في آخر ملف CSS عندك */
+
+@media print {
+  /* إخفاء كل أدوات الموقع والمدخلات */
+  body * {
+    visibility: hidden;
+  }
+
+  /* إظهار ورقة السيفي فقط ورفعها لأعلى الصفحة */
+  #cvPaper, #cvPaper * {
+    visibility: visible;
+  }
+
+  #cvPaper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* إلغاء رأس وذيل الصفحة التي يضيفها المتصفح تلقائياً */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}
+
