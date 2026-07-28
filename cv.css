@@ -5,6 +5,7 @@
   --bg-snow-white: #F8F8F8;
   --text-dark: #1E1B4B;
   --border-color: #E2E8F0;
+  --cv-theme-color: #593BFE;
 }
 
 * {
@@ -26,11 +27,24 @@ html, body {
 .app-header {
   background-color: var(--primary-electric);
   color: white;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100% !important;
+}
+
+.logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.logo span {
+  background: white;
+  color: var(--primary-electric);
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 5px;
 }
 
 /* التقسيم الرئيسي */
@@ -55,7 +69,6 @@ html, body {
   flex-direction: column;
   align-items: center;
   width: 100% !important;
-  overflow: hidden !important;
 }
 
 .control-card {
@@ -67,6 +80,11 @@ html, body {
   width: 100% !important;
 }
 
+.control-card h3 {
+  margin-bottom: 15px;
+  color: var(--primary-electric);
+}
+
 .form-group {
   margin-bottom: 12px;
 }
@@ -75,6 +93,7 @@ html, body {
   display: block;
   margin-bottom: 5px;
   font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .form-group input, 
@@ -84,7 +103,17 @@ html, body {
   padding: 10px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  font-size: 16px; /* يمنع التكبير التلقائي في الآيفون */
+  font-size: 16px; /* يمنع الزوم التلقائي في الأيفون */
+  outline: none;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+  border-color: var(--primary-electric);
+}
+
+.preview-actions {
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .btn-primary {
@@ -99,7 +128,7 @@ html, body {
   cursor: pointer;
 }
 
-/* ورقة الـ CV (شاشات الكمبيوتر) */
+/* ورقة الـ CV (عرض الكمبيوتر القياسي) */
 .cv-paper {
   width: 210mm;
   min-height: 297mm;
@@ -109,8 +138,17 @@ html, body {
   box-sizing: border-box;
 }
 
+.app-footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border-top: 1px solid var(--border-color);
+  margin-top: 30px;
+  color: #666;
+}
+
 /* =================================================== */
-/*             تنسيقات الموبايل المباشرة                */
+/*   تنسيقات للهاتف (البيانات فوق والـ CV تحت بدون خروج عن الشاشة)   */
 /* =================================================== */
 
 @media screen and (max-width: 768px) {
@@ -137,44 +175,11 @@ html, body {
     box-sizing: border-box !important;
   }
 
-  /* جعل الأشرطة الجانبية في القوالب تأخذ العرض الكامل على الموبايل */
   .cv-paper > div {
     flex-direction: column !important;
   }
   
   .cv-paper > div > div {
     width: 100% !important;
-  }
-}
-
-/* =================================================== */
-/*                   تنسيقات الطباعة / PDF              */
-/* =================================================== */
-
-@media print {
-  @page {
-    size: A4 portrait;
-    margin: 0;
-  }
-
-  body * {
-    visibility: hidden;
-  }
-
-  #cvPaper, #cvPaper * {
-    visibility: visible;
-  }
-
-  #cvPaper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 210mm !important;
-    min-height: 297mm !important;
-    margin: 0 !important;
-    padding: 15mm !important;
-    box-shadow: none !important;
-    border: none !important;
-    background: white !important;
   }
 }
