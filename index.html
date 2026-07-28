@@ -1,0 +1,153 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صانع السير الذاتية الاحترافي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="cv.css">
+</head>
+
+<!-- أضف السطر ده في ملف index.html فوق ملفات السكربت بتاعتك -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<body>
+
+  <header class="app-header">
+    <div class="logo">
+      <span>CV</span>Maker
+    </div>
+    <div class="header-controls">
+      <label for="langSelect">لغة السيفي:</label>
+      <select id="langSelect" class="custom-select">
+        <option value="ar">العربية (Arabic)</option>
+        <option value="en">English</option>
+        <option value="tr">Türkçe</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="app-container">
+
+    <!-- لوحة التحكم الجانبية -->
+    <section class="builder-panel">
+      
+      <!-- تخصيص الشكل واللون -->
+      <div class="control-card">
+        <h3>1. تخصيص التصميم</h3>
+        <div class="form-group">
+          <label>اختر قالب السيفي:</label>
+          <div class="template-selector">
+            <button class="tmpl-btn active" data-template="1">شكل 1 (كلاسيك)</button>
+            <button class="tmpl-btn" data-template="2">شكل 2 (جانبي ملون)</button>
+            <button class="tmpl-btn" data-template="3">شكل 3 (مودرن)</button>
+            <button class="tmpl-btn" data-template="4">شكل 4 (أنيق وفاخر)</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="colorPicker">لون السيفي الأساسي:</label>
+          <input type="color" id="colorPicker" value="#593BFE">
+        </div>
+      </div>
+
+      <!-- البيانات الشخصية -->
+      <div class="control-card">
+        <h3>2. البيانات الشخصية</h3>
+        <div class="form-group">
+          <label>الصورة الشخصية (اختياري):</label>
+          <input type="file" id="inputPhoto" accept="image/*">
+        </div>
+        <div class="form-group">
+          <label>الاسم بالكامل:</label>
+          <input type="text" id="inputName" placeholder="مثلاً: محمد أحمد">
+        </div>
+        <div class="form-group">
+          <label>المسمى الوظيفي:</label>
+          <input type="text" id="inputTitle" placeholder="مثلاً: مهندس برمجيات">
+        </div>
+        <div class="form-group">
+          <label>البريد الإلكتروني:</label>
+          <input type="email" id="inputEmail" placeholder="name@example.com">
+        </div>
+        <div class="form-group">
+          <label>رقم الهاتف:</label>
+          <input type="text" id="inputPhone" placeholder="+90 5xx xxx xx xx">
+        </div>
+        <div class="form-group">
+          <label>نبذة عنك (اختياري):</label>
+          <textarea id="inputAbout" rows="3" placeholder="اكتب نبذة مختصرة عن خبرتك..."></textarea>
+        </div>
+      </div>
+
+      <!-- الخبرات العملية (اختياري) -->
+      <div class="control-card">
+        <h3>3. الخبرات العملية (اختياري)</h3>
+        <div class="form-group">
+          <label>الشركة / المؤسسة:</label>
+          <input type="text" id="inputCompany" placeholder="مثلاً: شركة المدار للبرمجيات">
+        </div>
+        <div class="form-group">
+          <label>المسمى الوظيفي بالشركة:</label>
+          <input type="text" id="inputJobTitle" placeholder="مثلاً: مطور فرونت إند">
+        </div>
+        <div class="form-group">
+          <label>وصف المهام:</label>
+          <textarea id="inputJobDesc" rows="2" placeholder="تطوير واجهات المستخدم باستخدام React..."></textarea>
+        </div>
+      </div>
+
+      <!-- التعليم (اختياري) -->
+      <div class="control-card">
+        <h3>4. التعليم والشهادات (اختياري)</h3>
+        <div class="form-group">
+          <label>الجامعة / الكلية:</label>
+          <input type="text" id="inputSchool" placeholder="مثلاً: جامعة القاهرة - هندسة الحاسبات">
+        </div>
+        <div class="form-group">
+          <label>الدرجة العلمية / سنة التخرج:</label>
+          <input type="text" id="inputDegree" placeholder="مثلاً: بكالوريوس - 2024">
+        </div>
+      </div>
+
+      <!-- المهارات (اختياري) -->
+      <div class="control-card">
+        <h3>5. المهارات (اختياري)</h3>
+        <div class="form-group">
+          <label>المهارات (افصل بينها بـ فاصلة ,):</label>
+          <input type="text" id="inputSkills" placeholder="HTML, CSS, JavaScript, Problem Solving">
+        </div>
+      </div>
+
+    </section>
+
+    <!-- لوحة المعاينة -->
+    <section class="preview-panel">
+      <div class="preview-actions">
+        <button id="printBtn" class="btn-primary">طباعة / حفظ PDF</button>
+      </div>
+
+      <div id="cvPaper" class="cv-paper template-1">
+        <!-- بيتولد هنا كود السيفي تلقائياً -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- حقوق التطوير تحت زي ما طلبت يا بطل -->
+  <footer class="app-footer">
+    <p>تم تطوير بواسطة <strong>مؤمن يوسف</strong> &copy; 2026</p>
+  </footer>
+
+  <script src="translations.js"></script>
+  <script src="state.js"></script>
+  <script src="templates/template1.js"></script>
+  <script src="templates/template2.js"></script>
+  <script src="templates/template3.js"></script>
+  <script src="templates/template4.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
