@@ -1,4 +1,4 @@
-/* style.css - النسخة الحاسمة للموبايل */
+/* cv.css */
 
 :root {
   --primary-electric: #593BFE;
@@ -17,7 +17,7 @@
 html, body {
   width: 100% !important;
   max-width: 100% !important;
-  overflow-x: hidden !important; /* يمنع الخروج عن الشاشة نهائياً */
+  overflow-x: hidden !important;
   background-color: var(--bg-snow-white);
   color: var(--text-dark);
 }
@@ -84,7 +84,7 @@ html, body {
   padding: 10px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  font-size: 16px; /* يمنع الزوم التلقائي في أيفون */
+  font-size: 16px; /* يمنع التكبير التلقائي في الآيفون */
 }
 
 .btn-primary {
@@ -115,7 +115,7 @@ html, body {
 
 @media screen and (max-width: 768px) {
   .app-container {
-    flex-direction: column !important; /* البيانات فوق والـ CV تحت */
+    flex-direction: column !important;
     padding: 10px !important;
   }
 
@@ -124,7 +124,6 @@ html, body {
     margin-top: 15px;
   }
 
-  /* إجبار ورقة الـ CV وكل عناصرها تتكيف مع عرض شاشة التليفون */
   .cv-paper {
     width: 100% !important;
     min-height: auto !important;
@@ -133,39 +132,35 @@ html, body {
     overflow-x: hidden !important;
   }
 
-  /* إلغاء أي عرض ثابت داخل أجزاء القوالب في الموبايل */
   .cv-paper div {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+
+  /* جعل الأشرطة الجانبية في القوالب تأخذ العرض الكامل على الموبايل */
+  .cv-paper > div {
+    flex-direction: column !important;
+  }
+  
+  .cv-paper > div > div {
+    width: 100% !important;
+  }
 }
 
 /* =================================================== */
-/*                   تنسيقات الـ PDF                   */
+/*                   تنسيقات الطباعة / PDF              */
 /* =================================================== */
 
 @media print {
-  .app-header, .builder-panel, .preview-actions, .app-footer {
-    display: none !important;
+  @page {
+    size: A4 portrait;
+    margin: 0;
   }
-  .app-container {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-  .cv-paper {
-    width: 210mm !important;
-    min-height: 297mm !important;
-  }
-}
-/* أضف هذا الكود في آخر ملف CSS عندك */
 
-@media print {
-  /* إخفاء كل أدوات الموقع والمدخلات */
   body * {
     visibility: hidden;
   }
 
-  /* إظهار ورقة السيفي فقط ورفعها لأعلى الصفحة */
   #cvPaper, #cvPaper * {
     visibility: visible;
   }
@@ -177,15 +172,9 @@ html, body {
     width: 210mm !important;
     min-height: 297mm !important;
     margin: 0 !important;
-    padding: 20px !important;
+    padding: 15mm !important;
     box-shadow: none !important;
     border: none !important;
-  }
-
-  /* إلغاء رأس وذيل الصفحة التي يضيفها المتصفح تلقائياً */
-  @page {
-    size: A4 portrait;
-    margin: 0;
+    background: white !important;
   }
 }
-
