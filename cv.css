@@ -1,15 +1,11 @@
 /* style.css */
 
-/* 
-  يا سيدي دي المتغيرات الأساسية للموقع 
-  أخذنا الألوان بالضبط زي الصورة: البنفسجي الكهربائي والأبيض الثلجي
-*/
 :root {
   --primary-electric: #593BFE;
   --bg-snow-white: #F8F8F8;
   --text-dark: #1E1B4B;
   --border-color: #E2E8F0;
-  --cv-theme-color: #593BFE; /* اللون المخصص للسيفي وبيتغير بالجافاسكريبت */
+  --cv-theme-color: #593BFE;
 }
 
 * {
@@ -22,21 +18,24 @@
 body {
   background-color: var(--bg-snow-white);
   color: var(--text-dark);
+  overflow-x: hidden; /* عشان يمنع السكرول العرضي الشاطح في الموبايل */
 }
 
-/* الهيدر الأنيق بالبنفسجي الكهربائي */
+/* الهيدر مع الاستجابة للموبايل */
 .app-header {
   background-color: var(--primary-electric);
   color: white;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 4px 12px rgba(89, 59, 254, 0.2);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
 }
 
@@ -48,24 +47,29 @@ body {
   margin-left: 5px;
 }
 
-/* التقسيمة الرئيسية للموقع */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* التقسيمة الرئيسية - تتكيف مع الموبايل والكمبيوتر */
 .app-container {
   display: flex;
+  flex-direction: row;
   gap: 20px;
   padding: 20px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
-/* اللوحة الجانبية لإدخال البيانات */
+/* لوحة المدخلات */
 .builder-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  padding-left: 10px;
+  width: 100%;
 }
 
 .control-card {
@@ -79,6 +83,7 @@ body {
 .control-card h3 {
   margin-bottom: 15px;
   color: var(--primary-electric);
+  font-size: 1.1rem;
 }
 
 .form-group {
@@ -89,6 +94,7 @@ body {
   display: block;
   margin-bottom: 5px;
   font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .form-group input, 
@@ -99,6 +105,7 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   outline: none;
+  font-size: 0.95rem;
 }
 
 .form-group input:focus, .form-group textarea:focus {
@@ -107,16 +114,18 @@ body {
 
 .template-selector {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 8px;
 }
 
 .tmpl-btn {
-  padding: 8px;
+  padding: 8px 12px;
   border: 1px solid var(--border-color);
   background: white;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
 }
 
 .tmpl-btn.active {
@@ -125,12 +134,14 @@ body {
   border-color: var(--primary-electric);
 }
 
-/* لوحة المعاينة الحي للـ CV */
+/* لوحة المعاينة (Preview) */
 .preview-panel {
   flex: 1.2;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  overflow: hidden; /* يمنع خروج الورقة خارج الشاشة */
 }
 
 .preview-actions {
@@ -144,41 +155,29 @@ body {
   background: var(--primary-electric);
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 1rem;
+  width: 100%; /* زر عريض وسهل الضغط في الموبايل */
+  max-width: 300px;
 }
 
-/* ورق السيفي المقاس القياسي (A4 Aspect Ratio) */
+/* الحاوية السحرية للورقة - بتخلي السيفي يحافظ على أبعاد الـ A4 ويزبط مقاسه على أي شاشة */
 .cv-paper {
   width: 210mm;
   min-height: 297mm;
   background: white;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   border-radius: 4px;
-  box-sizing: border-border-box;
+  box-sizing: border-box;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transform-origin: top center; /* المحاذاة من المنتصف العلوي عند التصغير */
+  transition: transform 0.2s ease;
 }
 
-/* طباعة فقط للسيفي */
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  #cvPaper, #cvPaper * {
-    visibility: visible;
-  }
-  #cvPaper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    box-shadow: none;
-  }
-}
-
+/* الفوتر */
 .app-footer {
   text-align: center;
   padding: 20px;
@@ -193,7 +192,39 @@ body {
   color: var(--primary-electric);
 }
 
-/* التأكد من عدم إظهار الفوتر أو العناصر الخارجية وقت الطباعة */
+/* =================================================== */
+/*             Media Queries لتجاوب الموبايل            */
+/* =================================================== */
+
+@media screen and (max-width: 900px) {
+  .app-container {
+    flex-direction: column; /* يخلي لوحة التحكم فوق والـ CV تحتها مباشرة */
+    padding: 10px;
+  }
+
+  .preview-panel {
+    margin-top: 20px;
+  }
+
+  /* تصغير الـ CV كـ Scale يناسب عرض شاشة التليفون بالضبط من غير ما يعك أبعاده الحقيقية */
+  .cv-paper {
+    transform: scale(0.42); /* نسبة تصغير متناسقة مع أبعاد الشاشات الصغيره */
+    margin-bottom: -160mm; /* تعويض المسافة الفاضية الناتجة عن الـ scale */
+  }
+
+  .preview-actions {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .cv-paper {
+    transform: scale(0.38); /* تصغير إضافي للشاشات الصغيرة جداً */
+    margin-bottom: -180mm;
+  }
+}
+
+/* إخفاء الأجزاء غير المطلوبة أثناء الطباعة/الـ PDF */
 @media print {
   .app-header, .builder-panel, .preview-actions, .app-footer {
     display: none !important;
@@ -202,8 +233,9 @@ body {
     padding: 0;
     margin: 0;
   }
-  #cvPaper {
+  .cv-paper {
+    transform: scale(1) !important;
+    margin-bottom: 0 !important;
     box-shadow: none;
-    border: none;
   }
 }
