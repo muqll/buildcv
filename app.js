@@ -1,4 +1,4 @@
-// app.js - الكود المكتمل والمصحح 100%
+// app.js
 
 // 1. حالة التطبيق (State Store)
 const store = {
@@ -143,17 +143,65 @@ function initFormListeners() {
   }
 }
 
-// 5. دالة الطباعة وتنزيل الـ PDF (المستقرة والمضمونة)
+// 5. دالة التنزيل المضمونة للطباعة وتحويل PDF
 function initPDFExport() {
   const printBtn = document.getElementById('printBtn');
   if (!printBtn) return;
 
   printBtn.addEventListener('click', () => {
-    window.print();
+    const cvElement = document.getElementById('cvPaper');
+    if (!cvElement) return;
+
+    // إنشاء iframe مخفي لإنشاء نسخة طباعة قياسية A4
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow.document;
+    
+    // كتابة محتوى السيفي مع التنسيقات الخاصة بالطباعة
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html dir="rtl" lang="ar">
+      <head>
+        <meta charset="UTF-8">
+        <title>CV</title>
+        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+        <style>
+          :root {
+            --cv-theme-color: ${store.data.themeColor || '#593BFE'};
+          }
+          * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+          body { background: white; width: 210mm; margin: 0 auto; padding: 10mm; }
+          @page { size: A4 portrait; margin: 0; }
+        </style>
+      </head>
+      <body>
+        ${cvElement.innerHTML}
+      </body>
+      </html>
+    `);
+    doc.close();
+
+    // تشغيل أمر الطباعة فور تجهيز المستند في الـ iframe
+    setTimeout(() => {
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+      }, 1000);
+    }, 300);
   });
 }
 
-// 6. تشغيل السكربت عند اكتمال تحميل الصفحة
+// 6. تشغيل السكربت عند التكليف
 document.addEventListener('DOMContentLoaded', () => {
   initFormListeners();
   initPDFExport();
