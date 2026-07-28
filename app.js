@@ -1,84 +1,193 @@
 // app.js
-document.addEventListener('DOMContentLoaded', () => {
 
-  // ربط جميع المدخلات بالـ State
+// 1. حالة التطبيق (State Store)
+const store = {
+  data: {
+    language: 'ar',
+    themeColor: '#593BFE',
+    name: '',
+    title: '',
+    email: '',
+    phone: '',
+    about: '',
+    school: '',
+    degree: '',
+    company: '',
+    jobTitle: '',
+    jobDesc: '',
+    skills: [],
+    photo: ''
+  }
+};
+
+// 2. النصوص المترجمة (Translations)
+const translations = {
+  ar: {
+    defaultName: 'الاسم الكامل هنا',
+    defaultTitle: 'المسمى الوظيفي الخاص بك',
+    email: 'البريد',
+    phone: 'الهاتف',
+    aboutTitle: 'نبذة عني',
+    educationTitle: 'التعليم والشهادات',
+    experienceTitle: 'الخبرة العملية',
+    skillsTitle: 'المهارات',
+    contactTitle: 'معلومات التواصل'
+  },
+  en: {
+    defaultName: 'Your Full Name',
+    defaultTitle: 'Your Job Title',
+    email: 'Email',
+    phone: 'Phone',
+    aboutTitle: 'About Me',
+    educationTitle: 'Education',
+    experienceTitle: 'Work Experience',
+    skillsTitle: 'Skills',
+    contactTitle: 'Contact Info'
+  }
+};
+
+// 3. دالة تحديث المعاينة الحية (Render CV Preview)
+function updatePreview() {
+  const cvPaper = document.getElementById('cvPaper');
+  if (!cvPaper) return;
+
+  const currentLang = store.data.language;
+  const t = translations[currentLang] || translations.ar;
+  const selectedTemplate = document.getElementById('templateSelect')?.value || '1';
+
+  // اختيار القالب المناسب حسب القيمة المحددة
+  let htmlContent = '';
+  if (selectedTemplate === '1' && typeof renderTemplate1 === 'function') {
+    htmlContent = renderTemplate1(store.data, t);
+  } else if (selectedTemplate === '2' && typeof renderTemplate2 === 'function') {
+    htmlContent = renderTemplate2(store.data, t);
+  } else if (selectedTemplate === '3' && typeof renderTemplate3 === 'function') {
+    htmlContent = renderTemplate3(store.data, t);
+  } else if (selectedTemplate === '4' && typeof renderTemplate4 === 'function') {
+    htmlContent = renderTemplate4(store.data, t);
+  } else if (typeof renderTemplate1 === 'function') {
+    htmlContent = renderTemplate1(store.data, t);
+  }
+
+  cvPaper.innerHTML = htmlContent;
+}
+
+// 4. ربط حقول المدخلات بالحالة (Form Inputs Event Listeners)
+function initFormListeners() {
   const inputs = [
-    { id: 'inputName', key: 'name' },
-    { id: 'inputTitle', key: 'title' },
-    { id: 'inputEmail', key: 'email' },
-    { id: 'inputPhone', key: 'phone' },
-    { id: 'inputAbout', key: 'about' },
-    { id: 'inputCompany', key: 'company' },
-    { id: 'inputJobTitle', key: 'jobTitle' },
-    { id: 'inputJobDesc', key: 'jobDesc' },
-    { id: 'inputSchool', key: 'school' },
-    { id: 'inputDegree', key: 'degree' }
+    'name', 'title', 'email', 'phone', 
+    'about', 'school', 'degree', 'company', 
+    'jobTitle', 'jobDesc'
   ];
 
-  inputs.forEach(item => {
-    const el = document.getElementById(item.id);
+  inputs.forEach(id => {
+    const el = document.getElementById(id);
     if (el) {
-      el.addEventListener('input', (e) => store.updateData(item.key, e.target.value));
+      el.addEventListener('input', (e) => {
+        store.data[id] = e.target.value;
+        updatePreview();
+      });
     }
   });
 
-  // المهارات
-  document.getElementById('inputSkills').addEventListener('input', (e) => {
-    const skillsArray = e.target.value.split(',').map(s => s.trim()).filter(s => s !== '');
-    store.updateData('skills', skillsArray);
-  });
+  // المهارات (تحويل النص إلى مصفوفة يفصل بينها فاصلة)
+  const skillsInput = document.getElementById('skills');
+  if (skillsInput) {
+    skillsInput.addEventListener('input', (e) => {
+      const val = e.target.value;
+      store.data.skills = val ? val.split(',').map(s => s.trim()).filter(Boolean) : [];
+      updatePreview();
+    });
+  }
 
-  // رفع الصورة
-  document.getElementById('inputPhoto').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (evt) => store.updateData('photo', evt.target.result);
-      reader.readAsDataURL(file);
-    }
-  });
-
-  // اختيار اللون
-  document.getElementById('colorPicker').addEventListener('input', (e) => {
-    store.updateData('themeColor', e.target.value);
-  });
-
-  // اختيار اللغة
-  document.getElementById('langSelect').addEventListener('change', (e) => {
-    store.updateData('language', e.target.value);
-  });
+  // الصورة الشخصية
+  const photoInput = document.getElementById('photo');
+  if (photoInput) {
+    photoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          store.data.photo = evt.target.result;
+          updatePreview();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
 
   // اختيار القالب
-  const templateButtons = document.querySelectorAll('.tmpl-btn');
-  templateButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      templateButtons.forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      store.updateData('selectedTemplate', e.target.getAttribute('data-template'));
+  const templateSelect = document.getElementById('templateSelect');
+  if (templateSelect) {
+    templateSelect.addEventListener('change', () => {
+      updatePreview();
+    });
+  }
+
+  // اختيار اللون
+  const themeColorInput = document.getElementById('themeColor');
+  if (themeColorInput) {
+    themeColorInput.addEventListener('input', (e) => {
+      store.data.themeColor = e.target.value;
+      document.documentElement.style.setProperty('--cv-theme-color', e.target.value);
+      updatePreview();
+    });
+  }
+
+  // اختيار اللغة
+  const langSelect = document.getElementById('langSelect');
+  if (langSelect) {
+    langSelect.addEventListener('change', (e) => {
+      store.data.language = e.target.value;
+      updatePreview();
+    });
+  }
+}
+
+// 5. دالة تنزيل الـ PDF (مع ضبط الأبعاد الذكي للموبايل)
+function initPDFExport() {
+  const printBtn = document.getElementById('printBtn');
+  if (!printBtn) return;
+
+  printBtn.addEventListener('click', () => {
+    const cvElement = document.getElementById('cvPaper');
+    const personName = store.data.name ? store.data.name.trim() : 'CV';
+
+    const originalText = printBtn.innerText;
+    printBtn.innerText = 'جاري التحميل... ⏳';
+    printBtn.disabled = true;
+
+    // تطبيق أبعاد A4 الحقيقية مؤقتاً للتصدير
+    cvElement.style.width = '210mm';
+    cvElement.style.minHeight = '297mm';
+
+    const opt = {
+      margin:       0,
+      filename:     `${personName}_CV.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(cvElement).save().then(() => {
+      // إعادة التصميم للوضع المرن بعد التنزيل
+      cvElement.style.width = '';
+      cvElement.style.minHeight = '';
+      printBtn.innerText = originalText;
+      printBtn.disabled = false;
+    }).catch(err => {
+      console.error('حدث خطأ أثناء تحميل الـ PDF:', err);
+      cvElement.style.width = '';
+      cvElement.style.minHeight = '';
+      printBtn.innerText = originalText;
+      printBtn.disabled = false;
     });
   });
+}
 
-  // زر الطباعة
-  document.getElementById('printBtn').addEventListener('click', () => {
-    window.print();
-  });
-
-  // تحديث الرسم الحي (Render)
-  store.subscribe((data) => {
-    const paper = document.getElementById('cvPaper');
-    const langDict = translations[data.language] || translations.ar;
-
-    let templateHTML = '';
-    switch(data.selectedTemplate) {
-      case '1': templateHTML = renderTemplate1(data, langDict); break;
-      case '2': templateHTML = renderTemplate2(data, langDict); break;
-      case '3': templateHTML = renderTemplate3(data, langDict); break;
-      case '4': templateHTML = renderTemplate4(data, langDict); break;
-      default: templateHTML = renderTemplate1(data, langDict);
-    }
-
-    paper.innerHTML = templateHTML;
-  });
-
-  store.notify();
+// 6. تشغيل السكربت عند اكتمال تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+  initFormListeners();
+  initPDFExport();
+  updatePreview();
 });
