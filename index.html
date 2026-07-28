@@ -1,18 +1,20 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>صانع السير الذاتية الاحترافي</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- ملف الـ CSS المحدث -->
   <link rel="stylesheet" href="cv.css">
-</head>
 
-<!-- أضف السطر ده في ملف index.html فوق ملفات السكربت بتاعتك -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- مكتبة تحويل الـ HTML إلى PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
 
 <body>
 
@@ -25,32 +27,32 @@
       <select id="langSelect" class="custom-select">
         <option value="ar">العربية (Arabic)</option>
         <option value="en">English</option>
-        <option value="tr">Türkçe</option>
       </select>
     </div>
   </header>
 
   <main class="app-container">
 
-    <!-- لوحة التحكم الجانبية -->
+    <!-- لوحة التحكم وإدخال البيانات (بتيجي فوق في الموبايل) -->
     <section class="builder-panel">
       
       <!-- تخصيص الشكل واللون -->
       <div class="control-card">
         <h3>1. تخصيص التصميم</h3>
         <div class="form-group">
-          <label>اختر قالب السيفي:</label>
-          <div class="template-selector">
-            <button class="tmpl-btn active" data-template="1">شكل 1 (كلاسيك)</button>
-            <button class="tmpl-btn" data-template="2">شكل 2 (جانبي ملون)</button>
-            <button class="tmpl-btn" data-template="3">شكل 3 (مودرن)</button>
-            <button class="tmpl-btn" data-template="4">شكل 4 (أنيق وفاخر)</button>
-          </div>
+          <label for="templateSelect">اختر قالب السيفي:</label>
+
+          <select id="templateSelect" class="custom-select">
+            <option value="1">شكل 1 (كلاسيك)</option>
+            <option value="2">شكل 2 (جانبي ملون)</option>
+            <option value="3">شكل 3 (مودرن)</option>
+            <option value="4">شكل 4 (أنيق وفاخر)</option>
+          </select>
         </div>
 
         <div class="form-group">
-          <label for="colorPicker">لون السيفي الأساسي:</label>
-          <input type="color" id="colorPicker" value="#593BFE">
+          <label for="themeColor">لون السيفي الأساسي:</label>
+          <input type="color" id="themeColor" value="#593BFE">
         </div>
       </div>
 
@@ -58,58 +60,60 @@
       <div class="control-card">
         <h3>2. البيانات الشخصية</h3>
         <div class="form-group">
-          <label>الصورة الشخصية (اختياري):</label>
-          <input type="file" id="inputPhoto" accept="image/*">
+          <label for="photo">الصورة الشخصية (اختياري):</label>
+
+          <input type="file" id="photo" accept="image/*">
         </div>
         <div class="form-group">
-          <label>الاسم بالكامل:</label>
-          <input type="text" id="inputName" placeholder="مثلاً: محمد أحمد">
+          <label for="name">الاسم بالكامل:</label>
+          <input type="text" id="name" placeholder="مثلاً: سلطان الأحمد">
         </div>
         <div class="form-group">
-          <label>المسمى الوظيفي:</label>
-          <input type="text" id="inputTitle" placeholder="مثلاً: مهندس برمجيات">
+          <label for="title">المسمى الوظيفي:</label>
+          <input type="text" id="title" placeholder="مثلاً: مهندس برمجيات">
         </div>
         <div class="form-group">
-          <label>البريد الإلكتروني:</label>
-          <input type="email" id="inputEmail" placeholder="name@example.com">
+          <label for="email">البريد الإلكتروني:</label>
+          <input type="email" id="email" placeholder="name@example.com">
         </div>
         <div class="form-group">
-          <label>رقم الهاتف:</label>
-          <input type="text" id="inputPhone" placeholder="+90 5xx xxx xx xx">
+          <label for="phone">رقم الهاتف:</label>
+          <input type="text" id="phone" placeholder="+966 5xx xxx xxx">
         </div>
         <div class="form-group">
-          <label>نبذة عنك (اختياري):</label>
-          <textarea id="inputAbout" rows="3" placeholder="اكتب نبذة مختصرة عن خبرتك..."></textarea>
+          <label for="about">نبذة عنك (اختياري):</label>
+          <textarea id="about" rows="3" placeholder="اكتب نبذة مختصرة عن خبرتك..."></textarea>
+        </div>
+      </div>
+
+      <!-- التعليم والشهادات (اختياري) -->
+      <div class="control-card">
+        <h3>3. التعليم والشهادات (اختياري)</h3>
+        <div class="form-group">
+          <label for="school">الجامعة / الكلية:</label>
+          <input type="text" id="school" placeholder="مثلاً: جامعة الملك سعود - علوم حاسب">
+        </div>
+        <div class="form-group">
+          <label for="degree">الدرجة العلمية / سنة التخرج:</label>
+          <input type="text" id="degree" placeholder="مثلاً: بكالوريوس - 2025">
         </div>
       </div>
 
       <!-- الخبرات العملية (اختياري) -->
       <div class="control-card">
-        <h3>3. الخبرات العملية (اختياري)</h3>
+        <h3>4. الخبرات العملية (اختياري)</h3>
         <div class="form-group">
-          <label>الشركة / المؤسسة:</label>
-          <input type="text" id="inputCompany" placeholder="مثلاً: شركة المدار للبرمجيات">
-        </div>
-        <div class="form-group">
-          <label>المسمى الوظيفي بالشركة:</label>
-          <input type="text" id="inputJobTitle" placeholder="مثلاً: مطور فرونت إند">
-        </div>
-        <div class="form-group">
-          <label>وصف المهام:</label>
-          <textarea id="inputJobDesc" rows="2" placeholder="تطوير واجهات المستخدم باستخدام React..."></textarea>
-        </div>
-      </div>
+          <label for="company">الشركة / المؤسسة:</label>
 
-      <!-- التعليم (اختياري) -->
-      <div class="control-card">
-        <h3>4. التعليم والشهادات (اختياري)</h3>
-        <div class="form-group">
-          <label>الجامعة / الكلية:</label>
-          <input type="text" id="inputSchool" placeholder="مثلاً: جامعة القاهرة - هندسة الحاسبات">
+          <input type="text" id="company" placeholder="مثلاً: شركة المدار للبرمجيات">
         </div>
         <div class="form-group">
-          <label>الدرجة العلمية / سنة التخرج:</label>
-          <input type="text" id="inputDegree" placeholder="مثلاً: بكالوريوس - 2024">
+          <label for="jobTitle">المسمى الوظيفي بالشركة:</label>
+          <input type="text" id="jobTitle" placeholder="مثلاً: مطور فرونت إند">
+        </div>
+        <div class="form-group">
+          <label for="jobDesc">وصف المهام:</label>
+          <textarea id="jobDesc" rows="2" placeholder="تطوير واجهات المستخدم باستخدام JavaScript..."></textarea>
         </div>
       </div>
 
@@ -117,33 +121,31 @@
       <div class="control-card">
         <h3>5. المهارات (اختياري)</h3>
         <div class="form-group">
-          <label>المهارات (افصل بينها بـ فاصلة ,):</label>
-          <input type="text" id="inputSkills" placeholder="HTML, CSS, JavaScript, Problem Solving">
+          <label for="skills">المهارات (افصل بينها بـ فاصلة ,):</label>
+          <input type="text" id="skills" placeholder="HTML, CSS, JavaScript, Problem Solving">
         </div>
       </div>
 
     </section>
 
-    <!-- لوحة المعاينة -->
+    <!-- لوحة المعاينة (بتيجي تحت في الموبايل وبجنب البيانات في الكمبيوتر) -->
     <section class="preview-panel">
       <div class="preview-actions">
-        <button id="printBtn" class="btn-primary">طباعة / حفظ PDF</button>
+        <button id="printBtn" class="btn-primary">تحميل السيفي PDF ⬇️</button>
       </div>
 
-      <div id="cvPaper" class="cv-paper template-1">
-        <!-- بيتولد هنا كود السيفي تلقائياً -->
+      <div id="cvPaper" class="cv-paper">
+        <!-- يتم توليد كود السيفي هنا تلقائياً -->
       </div>
     </section>
 
   </main>
 
-  <!-- حقوق التطوير تحت زي ما طلبت يا بطل -->
   <footer class="app-footer">
     <p>تم تطوير بواسطة <strong>مؤمن يوسف</strong> &copy; 2026</p>
   </footer>
 
-  <script src="translations.js"></script>
-  <script src="state.js"></script>
+  <!-- السكربتات الخاصة بالتطبيق -->
   <script src="templates/template1.js"></script>
   <script src="templates/template2.js"></script>
   <script src="templates/template3.js"></script>
